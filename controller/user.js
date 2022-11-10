@@ -25,7 +25,7 @@ exports.login = async (req, res, next) => {
   );
 
   req.session.authtoken = token;
-  res.render("/user/home");
+  res.redirect("/user/home");
 };
 
 exports.getSignup = (req, res) => {
