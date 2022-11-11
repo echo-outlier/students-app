@@ -79,4 +79,11 @@
        p{
            font-weight: 900;
        }
+
+.sizeChange{
+	border-top: 1px solid #f9f9f9;
+	padding-top: 46px;
+	text-align: center;
+	border-radius: 15px;
+}
  

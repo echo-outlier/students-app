@@ -10,9 +10,16 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/dashboard/styles.css" />
-    <link rel="stylesheet" href="/studentRequest/style.css" />
+    <!-- ============== CHART ==================== -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Muli&display=swap" rel="stylesheet"> 
+
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  -->
+    <link rel="stylesheet" href="/attendance/style.css" />
+    <!-- ========================================= -->
     <title>Student Dashboard</title>
     <link rel="shortcut icon" href="/home/favicon.png" type="image/x-icon">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body id="body">
     <div class="container-dashboard">
@@ -36,74 +43,20 @@
       <main>
         <div class="main__container">
           <div class="section-title">
-            <h2>Student Request</h2>
+            <h2>Attendance</h2>
           </div>
-          <div class="new-sort">
-            
-            <% if(query == "progress") { %>
-            <div class="dropdown">
-              <button class="dropbtn">IN PROGRESS</button>
-              <div class="dropdown-content">
-              <a href="/user/studentRequests/get">ALL</a>
-              <a href="/user/studentRequests/get?query=resolved">RESOLVED</a>
-              </div>
-            </div>
-            <% } else if(query == "resolved") { %>
-            <div class="dropdown">
-              <button class="dropbtn">RESOLVED</button>
-              <div class="dropdown-content">
-              <a href="/user/studentRequests/get">ALL</a>
-              <a href="/user/studentRequests/get?query=progress">IN PROGRESS</a>
-              </div>
-            </div>
-            <% } else { %>
-              <div class="dropdown">
-                <button class="dropbtn">ALL</button>
-                <div class="dropdown-content">
-                <a href="/user/studentRequests/get?query=progress">IN PROGRESS</a>
-                <a href="/user/studentRequests/get?query=resolved">RESOLVED</a>
+          <!-- MAIN TITLE STARTS HERE -->
+          <section id="s-team" class="section">
+            <div class="sizeChange">
+                <div class="skill-row" >
+                  <% info.forEach(element => { %>
+                      <div class="skill-item center-block" style="background-color:  #3EA175; border-radius:10px" >
+                        <a style="text-decoration: none" href="#"><h2 style="padding: 20px;font-weight:bold;font-size:30px; color: #f1f1f1; "><%=element.courseName%></h2></a>
+                      </div>
+                  <% }) %>
                 </div>
               </div>
-            <% } %>
-
-            <a href="/user/studentRequests/create" style="float: right;"><button class="learn-more">NEW REQUEST</button></a>
-          </div>
-          <% all.forEach( e => { %>
-            <div class="body-class" style="margin: 20px;">
-              <div class="cards" style="border-left: 1.5px solid <%= e.color%>;">
-    
-                <div class="contact"><%=e.tags%></div>
-                        
-                 <div class="card active" id="overview">
-                    
-                    <div class="card-content">
-                        <div class="row">
-                            <div class="left col">
-                                <h2><strong><%= e.title %></strong></h2>
-                                
-                                <p><%= e.description %></p>
-                                <p><span class="date"><%= e.date %></span>     <span class="status">STATUS : <span id="Status1">INITIATED</span> 
-                                    <% if(e.status == "RESOLVED") { %>
-                                      <span class="check">&#10004;</span>
-                                    <% } else if(e.status == "IN PROGRESS") { %>
-                                      <span class="uncheck"> &#33;</span>
-                                    <% } else { %>
-                                      <span style="font-size: 20px;">🚀</span>
-                                      <% } %>
-                                    </span></p>
-                                
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div> 
-              </div>
-            </div>
-          <% }) %>
-          
-         
-          
-          
+          </section>
         </div>
       </main>
 
@@ -127,7 +80,7 @@
             <a href="/user/home">Dashboard</a>
           </div>
           <h2>Class</h2>
-          <div class="sidebar__link">
+          <div class="sidebar__link active_menu_link">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
             <a href="/user/attendance">Attendance</a>
           </div>
@@ -144,7 +97,7 @@
             <a href="/user/studyMaterial">Study Material</a>
           </div>
           <h2>College</h2>
-          <div class="sidebar__link active_menu_link">
+          <div class="sidebar__link">
             <i class="fa fa-question"></i>
             <a href="/user/studentRequests/get">Student Requests</a>
           </div>
@@ -179,5 +132,58 @@
     <form id="logout" method="post" action="/user/logout"></form>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="/dashboard/script.js"></script>
+    <!-- ====================== CHART SCRIPT ============================= -->
+    <script src="/attendance/plugins/jquery-2.2.4.min.js"></script>
+ <script src="/attendance/plugins/jquery.appear.min.js"></script>
+ <script src="/attendance/plugins/jquery.easypiechart.min.js"></script> 
+ <script>
+    'use strict';
+
+var $window = $(window);
+
+function run()
+{
+	var fName = arguments[0],
+		aArgs = Array.prototype.slice.call(arguments, 1);
+	try {
+		fName.apply(window, aArgs);
+	} catch(err) {
+		 
+	}
+};
+ 
+/* chart
+================================================== */
+function _chart ()
+{
+	$('.b-skills').appear(function() {
+		setTimeout(function() {
+			$('.chart').easyPieChart({
+				easing: 'easeOutElastic',
+				delay: 3000,
+				barColor: '#369670',
+				trackColor: '#fff',
+				scaleColor: false,
+				lineWidth: 21,
+				trackWidth: 21,
+				size: 250,
+				lineCap: 'round',
+				onStep: function(from, to, percent) {
+					this.el.children[0].innerHTML = Math.round(percent);
+				}
+			});
+		}, 150);
+	});
+};
+ 
+
+$(document).ready(function() {
+  
+	run(_chart);
+  
+    
+});
+</script>
+    <!-- ================================================================ -->
   </body>
 </html>

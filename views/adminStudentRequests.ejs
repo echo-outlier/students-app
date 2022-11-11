@@ -45,10 +45,10 @@
               <button class="dropbtn">IN PROGRESS</button>
               <div class="dropdown-content">
               <a href="/user/studentRequests/get">ALL</a>
-              <a href="/user/studentRequests/get?query=resolved">RESOLVED</a>
+              <a href="/user/studentRequests/get?query=RESOLVED">RESOLVED</a>
               </div>
             </div>
-            <% } else if(query == "resolved") { %>
+            <% } else if(query == "RESOLVED") { %>
             <div class="dropdown">
               <button class="dropbtn">RESOLVED</button>
               <div class="dropdown-content">
@@ -61,12 +61,11 @@
                 <button class="dropbtn">ALL</button>
                 <div class="dropdown-content">
                 <a href="/user/studentRequests/get?query=progress">IN PROGRESS</a>
-                <a href="/user/studentRequests/get?query=resolved">RESOLVED</a>
+                <a href="/user/studentRequests/get?query=RESOLVED">RESOLVED</a>
                 </div>
               </div>
             <% } %>
 
-            <a href="/user/studentRequests/create" style="float: right;"><button class="learn-more">NEW REQUEST</button></a>
           </div>
           <% all.forEach( e => { %>
             <div class="body-class" style="margin: 20px;">
@@ -82,7 +81,7 @@
                                 <h2><strong><%= e.title %></strong></h2>
                                 
                                 <p><%= e.description %></p>
-                                <p><span class="date"><%= e.date %></span>     <span class="status">STATUS : <span id="Status1">INITIATED</span> 
+                                <p><span class="date"><%= e.date %></span>     <span class="status">STATUS : <span id="Status"><input id="changeButton"  class="learn-more" onclick="change()" type="button" value="IN PROGRESS"></span>
                                     <% if(e.status == "RESOLVED") { %>
                                       <span class="check">&#10004;</span>
                                     <% } else if(e.status == "IN PROGRESS") { %>
@@ -91,18 +90,23 @@
                                       <span style="font-size: 20px;">🚀</span>
                                       <% } %>
                                     </span></p>
+                                    
                                 
                             </div>
                             
                         </div>
+
                     </div>
+                    
                 </div> 
+                
               </div>
+              
             </div>
           <% }) %>
           
          
-          
+ 
           
         </div>
       </main>
@@ -179,5 +183,13 @@
     <form id="logout" method="post" action="/user/logout"></form>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="/dashboard/script.js"></script>
+    <script>
+      function change(){
+        if(document.getElementById("changeButton").value == "IN PROGRESS"){
+          document.getElementById("changeButton").value = "RESOLVED";
+        }
+                
+      }
+    </script>
   </body>
 </html>

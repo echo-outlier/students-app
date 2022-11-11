@@ -82,7 +82,7 @@
                                 <h2><strong><%= e.title %></strong></h2>
                                 
                                 <p><%= e.description %></p>
-                                <p> <span class="date"><%= e.date %></span>     <span class="status">STATUS : <%= e.status %> 
+                                <p> <span class="date"><%= e.date %></span>     <span class="status">STATUS : <span id="Status2">INITIATED</span>
                                     <% if(e.status == "RESOLVED") { %>
                                       <span class="check">&#10004;</span>
                                     <% } else if(e.status == "IN PROGRESS") { %>
