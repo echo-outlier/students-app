@@ -75,7 +75,7 @@ exports.signup = async (req, res, next) => {
 
 exports.home = async (req, res) => {
   const user = await User.findOne({ email: req.user.email });
-  res.render("dashboard", { name: user.firstName });
+  res.render("dashboard", { name: user.name });
 };
 
 exports.attendance = async (req, res) => {
@@ -102,12 +102,12 @@ exports.attendance = async (req, res) => {
       };
     })
   );
-  res.render("attendance", { name: user.firstName, info: attendanceResult });
+  res.render("attendance", { name: user.name, info: attendanceResult });
 };
 
 exports.timetable = async (req, res) => {
   const user = await User.findOne({ email: req.user.email });
-  res.render("timetable", { name: user.firstName });
+  res.render("timetable", { name: user.name });
 };
 
 exports.logout = (req, res, next) => {
@@ -118,24 +118,24 @@ exports.logout = (req, res, next) => {
 
 exports.library = async (req, res) => {
   const user = await User.findOne({ email: req.user.email });
-  res.render("library", { name: user.firstName });
+  res.render("library", { name: user.name });
 };
 
 exports.almanac = async (req, res) => {
   const user = await User.findOne({ email: req.user.email });
-  res.render("almanac", { name: user.firstName });
+  res.render("almanac", { name: user.name });
 };
 
 exports.alumninetwork = async (req, res) => {
   const user = await User.findOne({ email: req.user.email });
   const alumni = await Alumni.find();
-  res.render("alumninetwork", { name: user.firstName, alumni });
+  res.render("alumninetwork", { name: user.name, alumni });
 };
 
 exports.opportunity = async (req, res) => {
   const result = await Opportunity.find();
   const user = await User.findOne({ email: req.user.email });
-  res.render("opportunity", { info: result, name: user.firstName });
+  res.render("opportunity", { info: result, name: user.name });
 };
 
 exports.studentRequestsCreate = async (req, res) => {
@@ -164,17 +164,21 @@ exports.studentRequestsCreate = async (req, res) => {
     monthNames[DATE.getMonth()] +
     " " +
     DATE.getFullYear();
-  const status = "INPROGESS";
   const result = await StudentRequest.create({
     name: user.name,
     email: user.email,
     date,
     title,
-    status,
     description,
     tags,
   });
   res.redirect("get");
+};
+
+exports.studentRequestsCreateGet = async (req, res) => {
+  const user = await User.findOne({ email: req.user.email });
+
+  res.render("createSR", { name: user.name });
 };
 
 exports.studentRequestsGet = async (req, res) => {
@@ -195,7 +199,7 @@ exports.studentRequestsGet = async (req, res) => {
     result = await StudentRequest.find(
       {
         email: user.email,
-        status: "IN PROGRESS",
+        status: "INPROGRESS",
       },
       null,
       { sort: { createdAt: -1 } }
@@ -225,7 +229,7 @@ exports.studentRequestsGet = async (req, res) => {
   });
   res.render("studentRequest", {
     all: modifiedResult,
-    name: user.firstName,
+    name: user.name,
     query,
   });
 };
@@ -256,9 +260,9 @@ exports.complaintCreate = async (req, res) => {
     monthNames[DATE.getMonth()] +
     " " +
     DATE.getFullYear();
+
   const result = await Complaint.create({
-    firstName: user.firstName,
-    lastName: user.lastName,
+    name: user.name,
     email: user.email,
     date,
     title,
@@ -271,7 +275,7 @@ exports.complaintCreate = async (req, res) => {
 exports.complaintCreateGet = async (req, res) => {
   const user = await User.findOne({ email: req.user.email });
 
-  res.render("createC", { name: user.firstName });
+  res.render("createC", { name: user.name });
 };
 
 exports.complaintGet = async (req, res) => {
@@ -288,17 +292,17 @@ exports.complaintGet = async (req, res) => {
       { sort: { createdAt: -1 } }
     );
   }
-  if (query === "progress") {
+  if (query === "PROGRESS") {
     result = await Complaint.find(
       {
         email: user.email,
-        status: "IN PROGRESS",
+        status: "INPROGRESS",
       },
       null,
       { sort: { createdAt: -1 } }
     );
   }
-  if (query === "resolved") {
+  if (query === "RESOLVED") {
     result = await Complaint.find(
       {
         email: user.email,
@@ -317,15 +321,15 @@ exports.complaintGet = async (req, res) => {
     "#ff4961",
     "#2196f3",
   ];
-  const modifiedResult = result.map((e, index) => {
+  const modifiedResult = result?.map((e, index) => {
     e["color"] = color[index % 6];
     return e;
   });
-  res.render("complaint", { all: modifiedResult, name: user.firstName, query });
+  res.render("complaint", { all: modifiedResult, name: user.name, query });
 };
 
 exports.studyMaterial = async (req, res) => {
   const user = await User.findOne({ email: req.user.email });
 
-  res.render("studyMaterial", { name: user.firstName });
+  res.render("studyMaterial", { name: user.name });
 };

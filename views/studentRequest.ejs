@@ -88,11 +88,11 @@
                       <p>
                         <span class="date"><%= e.date %></span>
                         <span class="status"
-                          >STATUS : <span id="Status1">INITIATED</span>
+                          >STATUS : <span id="Status1"></span>
                           <% if(e.status == "RESOLVED") { %>
-                          <span class="check">&#10004;</span>
-                          <% } else if(e.status == "IN PROGRESS") { %>
-                          <span class="uncheck"> &#33;</span>
+                          <span class="check">RESOLVED &#10004;</span>
+                          <% } else if(e.status == "INPROGRESS") { %>
+                          <span class="uncheck">INPROGRESS &#33;</span>
                           <% } else { %>
                           <span style="font-size: 20px">🚀</span>
                           <% } %>

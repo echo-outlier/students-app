@@ -1,46 +1,38 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
 const complaintSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true
-  },
-  lastName: {
-    type: String,
-    required: true
-  },
+  name: { type: String, required: true },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   date: {
     type: String,
-    required: true
+    required: true,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   tags: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: String,
     required: true,
-    default: 'INITIATED'
+    default: "INPROGRESS",
   },
   createdAt: {
-    type : Date, 
-    default: Date.now
-  }
-  
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('Complaint', complaintSchema);
+module.exports = mongoose.model("Complaint", complaintSchema);

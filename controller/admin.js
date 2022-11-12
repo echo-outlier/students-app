@@ -4,6 +4,7 @@ const Course = require("../models/course");
 const Attendance = require("../models/attendance");
 const Opportunity = require("../models/opportunity");
 const StudentRequest = require("../models/studentRequests");
+const Complaint = require("../models/complaints");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -52,27 +53,80 @@ exports.studentList = async (req, res) => {
   });
 };
 
-exports.resolveRequest = async (req, res) => {
-  const { id } = req.body;
-  const sq = await StudentRequest.find({ _id: id, status: "RESOLVED" });
-  console.log("sq", sq);
-  res.status(200).send({ data: "asdlkjflkdsjf" });
-};
-
 exports.complaints = async (req, res) => {
-  const query = undefined;
+  let { query, status } = req.query;
+  console.log("query", query);
+  console.log("await", await Complaint.find({}));
+
+  const user = await User.findOne({ email: req.user.email });
+  let result;
+  if (query == undefined) {
+    result = await Complaint.find({}, null, { sort: { createdAt: -1 } });
+  }
+  if (query === "progress") {
+    result = await Complaint.find(
+      {
+        status: "INPROGRESS",
+      },
+      null,
+      { sort: { createdAt: -1 } }
+    );
+  }
+  if (query === "resolved") {
+    result = await Complaint.find(
+      {
+        status: "RESOLVED",
+      },
+      null,
+      { sort: { createdAt: -1 } }
+    );
+  }
+
+  const color = [
+    "#666ee8",
+    "#28d094",
+    "#1e9ff2",
+    "#ff9149",
+    "#ff4961",
+    "#2196f3",
+  ];
+  const modifiedResult = result
+    ? result.map((e, index) => {
+        e["color"] = color[index % 6];
+        return e;
+      })
+    : [];
   res.render("adminComplaints", {
-    all: [],
-    name: "user",
+    all: modifiedResult,
+    name: user.name,
     query,
   });
 };
 
+exports.changeComplaintStatus = async (req, res) => {
+  const { id, status } = req.body;
+  console.log("status", id, status);
+  const ss = await Complaint.find({ _id: id });
+  console.log("ss", ss);
+  const sq = await Complaint.updateOne({ _id: id }, { status: status });
+  console.log("sq", sq);
+  res.status(200).send({ data: sq });
+};
+
+exports.changeStudentRequestStatus = async (req, res) => {
+  const { id, status } = req.body;
+  console.log("status", id, status);
+  const ss = await StudentRequest.find({ _id: id });
+  console.log("ss", ss);
+  const sq = await StudentRequest.updateOne({ _id: id }, { status: status });
+  console.log("sq", sq);
+  res.status(200).send({ data: sq });
+};
+
 exports.studentRequest = async (req, res) => {
-  const r = await StudentRequest.find();
-  console.log("all", r);
   let { query } = req.query;
 
+  console.log("query", query);
   const user = await User.findOne({ email: req.user.email });
   let result;
   if (query == undefined) {
@@ -81,13 +135,13 @@ exports.studentRequest = async (req, res) => {
   if (query === "progress") {
     result = await StudentRequest.find(
       {
-        status: "IN PROGRESS",
+        status: "INPROGRESS",
       },
       null,
       { sort: { createdAt: -1 } }
     );
   }
-  if (query === "resolved") {
+  if (query === "RESOLVED") {
     result = await StudentRequest.find(
       {
         status: "RESOLVED",
@@ -112,7 +166,7 @@ exports.studentRequest = async (req, res) => {
   console.log(modifiedResult);
   res.render("adminStudentRequests", {
     all: modifiedResult,
-    name: user.firstName,
+    name: user.name,
     query,
   });
 };
@@ -148,7 +202,7 @@ exports.logout = async () => {
 
 exports.addStudent = async (req, res, next) => {
   const {
-    firstName,
+    name,
     lastName,
     email,
     password,
@@ -169,7 +223,7 @@ exports.addStudent = async (req, res, next) => {
 
   try {
     const result = await User.create({
-      firstName,
+      name,
       lastName,
       email,
       password: hashPassword,

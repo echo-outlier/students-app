@@ -41,26 +41,26 @@
           <div class="new-sort">
             <% if(query == "progress") { %>
             <div class="dropdown">
-              <button class="dropbtn">IN PROGRESS</button>
+              <button class="dropbtn">INPROGRESS</button>
               <div class="dropdown-content">
-                <a href="/user/complaint/get">ALL</a>
-                <a href="/user/complaint/get?query=resolved">RESOLVED</a>
+                <a href="/admin/complaint/get">ALL</a>
+                <a href="/admin/complaint/get?query=resolved">RESOLVED</a>
               </div>
             </div>
             <% } else if(query == "resolved") { %>
             <div class="dropdown">
               <button class="dropbtn">RESOLVED</button>
               <div class="dropdown-content">
-                <a href="/user/complaint/get">ALL</a>
-                <a href="/user/complaint/get?query=progress">IN PROGRESS</a>
+                <a href="/admin/complaint/get">ALL</a>
+                <a href="/admin/complaint/get?query=progress">INPROGRESS</a>
               </div>
             </div>
             <% } else { %>
             <div class="dropdown">
               <button class="dropbtn">ALL</button>
               <div class="dropdown-content">
-                <a href="/user/complaint/get?query=progress">IN PROGRESS</a>
-                <a href="/user/complaint/get?query=resolved">RESOLVED</a>
+                <a href="/admin/complaint/get?query=progress">INPROGRESS</a>
+                <a href="/admin/complaint/get?query=resolved">RESOLVED</a>
               </div>
             </div>
             <% } %>
@@ -85,13 +85,13 @@
                             ><input
                               id="changeButton"
                               class="learn-more"
-                              onclick="change()"
+                              onclick='change("<%=e._id%>",)'
                               type="button"
-                              value="IN PROGRESS"
+                              value="<%=e.status%>"
                           /></span>
                           <% if(e.status == "RESOLVED") { %>
                           <span class="check">&#10004;</span>
-                          <% } else if(e.status == "IN PROGRESS") { %>
+                          <% } else if(e.status == "INPROGRESS") { %>
                           <span class="uncheck"> &#33;</span>
                           <% } else { %> <% } %>
                         </span>
@@ -126,7 +126,7 @@
             <a href="/admin/home">Dashboard</a>
           </div>
           <h2>Class</h2>
-          <div class="sidebar__link ">
+          <div class="sidebar__link">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
             <a href="/admin/attendance">Attendance</a>
           </div>
@@ -155,9 +155,33 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="/dashboard/script.js"></script>
     <script>
-      function change() {
-        if (document.getElementById("changeButton").value == "IN PROGRESS") {
-          document.getElementById("changeButton").value = "RESOLVED";
+      function change(id) {
+        console.log("aslkdjflk", id);
+        if (document.getElementById("changeButton").value == "INPROGRESS") {
+          fetch("http://localhost:3000/admin/complaint/status", {
+            method: "POST",
+            body: JSON.stringify({ id: id, status: "RESOLVED" }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          })
+            .then((res) => {
+              location.reload();
+            })
+            .catch((err) => console.log(err));
+        } else {
+          fetch("http://localhost:3000/admin/complaint/status", {
+            method: "POST",
+            body: JSON.stringify({ id: id, status: "INPROGRESS" }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          })
+            .then((res) => {
+              location.reload();
+            })
+            .catch((err) => console.log(err));
+          // document.getElementById("changeButton").value = "INPROGRESS";
         }
       }
     </script>

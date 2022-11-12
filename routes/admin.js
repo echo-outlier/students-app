@@ -12,7 +12,11 @@ router.get("/complaint/get", verify, adminController.complaints);
 router.get("/studentRequests/get", verify, adminController.studentRequest);
 router.get("/home", verify, adminController.adminDashboard);
 
-router.post("/complaint/resolve", adminController.resolveRequest);
+router.post("/complaint/status", verify, adminController.changeComplaintStatus);
+router.post(
+  "/studentRequest/status",
+  adminController.changeStudentRequestStatus
+);
 // router.get("/timetable", adminController.timetable);
 
 router.post("/add-student", adminController.addStudent);

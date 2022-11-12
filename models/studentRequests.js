@@ -27,7 +27,7 @@ const studentRequestSchema = new Schema({
   status: {
     type: String,
     required: true,
-    default: "INITIATED",
+    default: "INPROGRESS",
   },
   createdAt: {
     type: Date,
