@@ -38,38 +38,23 @@ exports.signup = async (req, res, next) => {
     if (checkUser) {
       res.render("signup", { alert: "exist" });
     }
-    const { email, password, name } = req.body;
-    console.log("email", email, password, name);
+    const { email, password, name, rollno } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
-    const arr = name.split(" ")[0];
-    const firstName = arr[0];
-    let lastName = "";
-    if (arr.length > 1) lastName = arr[1];
-    const gender = "F";
-    const phoneNumber = "";
-    const batch = "";
-    const branch = "";
-    const semester = "";
     const courses = ["AI", "ML", "CCN", "WAD", "TOC"];
 
     const user = await User.create({
-      firstName,
-      lastName,
+      name,
       email,
       password: hashPassword,
-      gender,
-      phoneNumber,
-      batch,
-      branch,
-      semester,
       courses,
+      rollno,
     });
 
     for (let i = 0; i < user.courses.length; i++) {
       const attendence = await Attendance.create({
         email: email,
         courseName: user.courses[i],
-        classesAbsent: Math.floor(Math.random() * 20) + 1,
+        classesAbsent: 0,
       });
     }
 
@@ -179,22 +164,17 @@ exports.studentRequestsCreate = async (req, res) => {
     monthNames[DATE.getMonth()] +
     " " +
     DATE.getFullYear();
+  const status = "INPROGESS";
   const result = await StudentRequest.create({
-    firstName: user.firstName,
-    lastName: user.lastName,
+    name: user.name,
     email: user.email,
     date,
     title,
+    status,
     description,
     tags,
   });
   res.redirect("get");
-};
-
-exports.studentRequestsCreateGet = async (req, res) => {
-  const user = await User.findOne({ email: req.user.email });
-
-  res.render("createSR", { name: user.firstName });
 };
 
 exports.studentRequestsGet = async (req, res) => {

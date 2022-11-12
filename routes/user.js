@@ -20,11 +20,6 @@ router.post(
   verify,
   userController.studentRequestsCreate
 );
-router.get(
-  "/studentRequests/create",
-  verify,
-  userController.studentRequestsCreateGet
-);
 router.get("/studentRequests/get", verify, userController.studentRequestsGet);
 router.post("/complaint/create", verify, userController.complaintCreate);
 router.get("/complaint/create", verify, userController.complaintCreateGet);

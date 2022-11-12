@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/dashboard/styles.css" />
     <link rel="stylesheet" href="/studentRequest/style.css" />
     <title>Student Dashboard</title>
-    <link rel="shortcut icon" href="/home/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/home/favicon.png" type="image/x-icon" />
   </head>
   <body id="body">
     <div class="container-dashboard">
@@ -39,71 +39,68 @@
             <h2>COMPLAINTS</h2>
           </div>
           <div class="new-sort">
-            
             <% if(query == "progress") { %>
-              <div class="dropdown">
-                <button class="dropbtn">IN PROGRESS</button>
-                <div class="dropdown-content">
+            <div class="dropdown">
+              <button class="dropbtn">IN PROGRESS</button>
+              <div class="dropdown-content">
                 <a href="/user/complaint/get">ALL</a>
                 <a href="/user/complaint/get?query=resolved">RESOLVED</a>
-                </div>
-              </div>
-              <% } else if(query == "resolved") { %>
-              <div class="dropdown">
-                <button class="dropbtn">RESOLVED</button>
-                <div class="dropdown-content">
-                <a href="/user/complaint/get">ALL</a>
-                <a href="/user/complaint/get?query=progress">IN PROGRESS</a>
-                </div>
-              </div>
-              <% } else { %>
-                <div class="dropdown">
-                  <button class="dropbtn">ALL</button>
-                  <div class="dropdown-content">
-                  <a href="/user/complaint/get?query=progress">IN PROGRESS</a>
-                  <a href="/user/complaint/get?query=resolved">RESOLVED</a>
-                  </div>
-                </div>
-              <% } %>
-
-            <a href="/user/complaint/create" style="float: right;"><button class="learn-more">NEW REQUEST</button></a>
-          </div>
-          <% all.forEach( e => { %>
-            <div class="body-class" style="margin: 20px;">
-              <div class="cards" style="border-left: 1.5px solid <%= e.color%>;">
-    
-                <div class="contact"><%=e.tags%></div>
-                        
-                 <div class="card active" id="overview">
-                    
-                    <div class="card-content">
-                        <div class="row">
-                            <div class="left col">
-                                <h2><strong><%= e.title %></strong></h2>
-                                
-                                <p><%= e.description %></p>
-                                <p> <span class="date"><%= e.date %></span>     <span class="status">STATUS : <span id="Status2">INITIATED</span>
-                                    <% if(e.status == "RESOLVED") { %>
-                                      <span class="check">&#10004;</span>
-                                    <% } else if(e.status == "IN PROGRESS") { %>
-                                      <span class="uncheck"> &#33;</span>
-                                    <% } else { %>
-                                      <span style="font-size: 20px;">🚀</span>
-                                      <% } %>
-                                    </span></p>
-                                
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div> 
               </div>
             </div>
+            <% } else if(query == "resolved") { %>
+            <div class="dropdown">
+              <button class="dropbtn">RESOLVED</button>
+              <div class="dropdown-content">
+                <a href="/user/complaint/get">ALL</a>
+                <a href="/user/complaint/get?query=progress">IN PROGRESS</a>
+              </div>
+            </div>
+            <% } else { %>
+            <div class="dropdown">
+              <button class="dropbtn">ALL</button>
+              <div class="dropdown-content">
+                <a href="/user/complaint/get?query=progress">IN PROGRESS</a>
+                <a href="/user/complaint/get?query=resolved">RESOLVED</a>
+              </div>
+            </div>
+            <% } %>
+
+            <a href="/user/complaint/create" style="float: right"
+              ><button class="learn-more">NEW REQUEST</button></a
+            >
+          </div>
+          <% all.forEach( e => { %>
+          <div class="body-class" style="margin: 20px">
+            <div class="cards" style="border-left: 1.5px solid <%= e.color%>">
+              <div class="contact"><%=e.tags%></div>
+
+              <div class="card active" id="overview">
+                <div class="card-content">
+                  <div class="row">
+                    <div class="left col">
+                      <h2><strong><%= e.title %></strong></h2>
+
+                      <p><%= e.description %></p>
+                      <p>
+                        <span class="date"><%= e.date %></span>
+                        <span class="status"
+                          >STATUS : <span id="Status2">INITIATED</span>
+                          <% if(e.status == "RESOLVED") { %>
+                          <span class="check">&#10004;</span>
+                          <% } else if(e.status == "IN PROGRESS") { %>
+                          <span class="uncheck"> &#33;</span>
+                          <% } else { %>
+                          <span style="font-size: 20px">🚀</span>
+                          <% } %>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <% }) %>
-          
-         
-          
-          
         </div>
       </main>
 
@@ -164,14 +161,18 @@
             <i class="fa fa-files-o"></i>
             <a href="/user/alumninetwork">Alumni Network</a>
           </div>
-          
+
           <!-- <div class="sidebar__logout">
             <i class="fa fa-power-off"></i>
             <a href="#">Log out</a>
           </div> -->
           <div class="sidebar__logout">
             <i class="fa fa-power-off"></i>
-            <a onclick="document.getElementById('logout').submit();" style="cursor: pointer;">Log out</a>
+            <a
+              onclick="document.getElementById('logout').submit();"
+              style="cursor: pointer"
+              >Log out</a
+            >
           </div>
         </div>
       </div>

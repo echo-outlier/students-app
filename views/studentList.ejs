@@ -64,7 +64,7 @@
     <main>
       <div class="main__container">
         <div class="section-title">
-          <h2>Attendance</h2>
+          <h2>Attendance <%totalClasses%></h2>
         </div>
         <table>
           
@@ -74,114 +74,74 @@
             <th>Present</th>
             <th>Total</th>
           </tr>
-          <tr>
-            <td>LCS2019038</td>
-            <td>Sakshi Vijay</td>
-            <td>
-              <div class="container">
-                <button data-decrease>-</button>
-                <input data-value type="text" value="1" disabled />
-                <button data-increase>+</button>
-              </div>
+          <% studentList.forEach( student => { %>
+            <tr>
+              <td><%=student.rollno%></td>
+              <td><%=student.name%></td>
+              <td>
+                <div class="container">
+                  <button data-decrease>-</button>
+                  <input data-value type="text" value="<%=student.classesPresent%>" disabled />
+                  <button data-increase>+</button>
+                </div>
 
-            </td>
-            <td>
-              <div class="container">
-                <button data-decrease>-</button>
-                <input data-value type="text" value="1" disabled />
-                <button data-increase>+</button>
-              </div>
-
-            </td>
-          </tr>
-          
-          <tr>
-            <td>LCS2019053</td>
-            <td>Saloni Sharma</td>
-            <td>
-              <div class="container">
-                <button data-decrease>-</button>
-                <input data-value type="text" value="1" disabled />
-                <button data-increase>+</button>
-              </div>
-
-            </td>
-            <td>
-              <div class="container">
-                <button data-decrease>-</button>
-                <input data-value type="text" value="1" disabled />
-                <button data-increase>+</button>
-              </div>
-
-            </td>
-          </tr>
+              </td>
+              <td>
+                <div class="container">
+                  <button data-decrease>-</button>
+                  <input data-value type="text" value="<%=student.totalClasses%>" disabled />
+                  <button data-increase>+</button>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
         </table>
         </section>
       </div>
     </main>
 
     <div id="sidebar">
-      <div class="sidebar__title">
-        <div class="sidebar__img">
-          <img src="/dashboard/assets/student.png" alt="logo" />
-          <h1>
-            <%=name%>
-          </h1>
-        </div>
-        <i onclick="closeSidebar()" class="fa fa-times" id="sidebarIcon" aria-hidden="true"></i>
-      </div>
-
-      <div class="sidebar__menu">
-        <div class="sidebar__link">
-          <i class="fa fa-home"></i>
-          <a href="/user/home">Dashboard</a>
-        </div>
-        <h2>Class</h2>
-        <div class="sidebar__link active_menu_link">
-          <i class="fa fa-user-secret" aria-hidden="true"></i>
-          <a href="/user/attendance">Attendance</a>
-        </div>
-        <div class="sidebar__link">
-          <i class="fa fa-building-o"></i>
-          <a href="/user/timetable">Timetable</a>
-        </div>
-        <div class="sidebar__link">
-          <i class="fa fa-wrench"></i>
-          <a href="/user/almanac">Almanac</a>
-        </div>
-        <div class="sidebar__link">
-          <i class="fa fa-archive"></i>
-          <a href="/user/studyMaterial">Study Material</a>
-        </div>
-        <h2>College</h2>
-        <div class="sidebar__link">
-          <i class="fa fa-question"></i>
-          <a href="/user/studentRequests/get">Student Requests</a>
-        </div>
-        <div class="sidebar__link">
-          <i class="fa fa-sign-out"></i>
-          <a href="/user/complaint/get">Complaints</a>
-        </div>
-        <div class="sidebar__link">
-          <i class="fa fa-calendar-check-o"></i>
-          <a href="/user/library">Library</a>
-        </div>
-        <div class="sidebar__link">
-          <i class="fa fa-files-o"></i>
-          <a href="/user/opportunity">Oppurtunities</a>
-        </div>
-        <div class="sidebar__link">
-          <i class="fa fa-files-o"></i>
-          <a href="/user/alumninetwork">Alumni Network</a>
+        <div class="sidebar__title">
+          <div class="sidebar__img">
+            <img src="/dashboard/assets/student.png" alt="logo" />
+            <h1>Admin</h1>
+          </div>
+          <i
+            onclick="closeSidebar()"
+            class="fa fa-times"
+            id="sidebarIcon"
+            aria-hidden="true"
+          ></i>
         </div>
 
-        <!-- <div class="sidebar__logout">
+        <div class="sidebar__menu">
+          <div class="sidebar__link">
+            <i class="fa fa-home"></i>
+            <a href="/admin/home">Dashboard</a>
+          </div>
+          <h2>Class</h2>
+          <div class="sidebar__link active_menu_link">
+            <i class="fa fa-user-secret" aria-hidden="true"></i>
+            <a href="/admin/attendance">Attendance</a>
+          </div>
+          <h2>College</h2>
+          <div class="sidebar__link">
+            <i class="fa fa-question"></i>
+            <a href="/admin/studentRequests/get">Student Requests</a>
+          </div>
+          <div class="sidebar__link">
+            <i class="fa fa-sign-out"></i>
+            <a href="/admin/complaint/get">Complaints</a>
+          </div>
+
+          <div class="sidebar__logout">
             <i class="fa fa-power-off"></i>
-            <a href="#">Log out</a>
-          </div> -->
-        <div class="sidebar__logout">
-          <i class="fa fa-power-off"></i>
-          <a onclick="document.getElementById('logout').submit();" style="cursor: pointer;">Log out</a>
+            <a
+              onclick="document.getElementById('logout').submit();"
+              style="cursor: pointer"
+              >Log out</a
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -246,6 +206,7 @@
     });
 
     function decrease() {
+      // const axios = fetch('/')
       var value = $(this).parent().find('[data-value]').val();
       if (value > 1) {
         value--;
