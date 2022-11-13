@@ -7,15 +7,44 @@ const StudentRequest = require("../models/studentRequests");
 const Complaint = require("../models/complaints");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { db } = require("../models/users");
 
 exports.adminDashboard = async (req, res) => {
   res.render("adminDashboard");
 };
 
+exports.deleteDatabase = async (req, res) => {
+  console.log("aslkjsdklfj");
+  const users = await User.find({});
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].email != "admin@gmail.com") {
+      console.log(await User.deleteOne({ _id: users[i]._id }));
+    }
+  }
+
+  await StudentRequest.deleteMany({});
+  await Complaint.deleteMany({});
+  await Attendance.deleteMany({});
+};
+
+exports.updateStudentAttendance = async (req, res) => {
+  const { email, courseName, absentClasses } = req.body;
+  console.log("email", email, courseName, absentClasses);
+  const attendance = await Attendance.find({
+    email: email,
+    courseName: courseName,
+  });
+  console.log("atte", attendance);
+  await Attendance.updateOne(
+    { _id: attendance[0]._id },
+    { classesAbsent: absentClasses }
+  );
+  res.status(200).send({});
+};
+
 exports.attendance = async (req, res) => {
   const { email } = req.user;
   const user = await User.findOne({ email });
-  console.log("user", user.courses);
   res.render("adminAttendance", {
     courses: user.courses,
   });
@@ -24,6 +53,7 @@ exports.attendance = async (req, res) => {
 exports.studentList = async (req, res) => {
   const courseName = req.params.course;
   const allUsers = await User.find();
+  console.log("all Users", allUsers);
   const courseDetails = await Course.find({ courseName: courseName });
   const totalClasses = courseDetails[0].totalClasses;
   const studentList = [];
@@ -34,7 +64,6 @@ exports.studentList = async (req, res) => {
         courseName: courseName,
       });
       const absentClasses = attendance[0].classesAbsent;
-      console.log("attendance", attendance);
       studentList.push({
         email: allUsers[i].email,
         name: allUsers[i].name,

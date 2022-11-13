@@ -76,6 +76,9 @@
               <p>Welcome to your dashboard</p>
             </div>
           </div>
+          <div class="delete-all-users" onclick="deleteDatabase()">
+            Delete Whole Database
+          </div>
           <div class="todo-calender">
             <div class="todo-calender-child-1">
               <div class="today"></div>
@@ -282,6 +285,21 @@
             $(this).remove();
           });
       }, 5000);
+
+      const deleteDatabase = () => {
+        fetch("http://localhost:3000/admin/delete", {
+          method: "POST",
+          body: JSON.stringify({}),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+          .then((res) => {
+            location.reload();
+          })
+          .catch((err) => console.log(err));
+        // document.getElementById("changeButton").value = "INPROGRESS";
+      };
     </script>
   </body>
 </html>

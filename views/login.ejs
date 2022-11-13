@@ -22,6 +22,10 @@
     <div class="alert alert-danger alert-container" role="alert">
       <strong>Login Failed!</strong> Incorrect password 😕
     </div>
+    <% } else if(alert === 'admin') { %>
+    <div class="alert alert-danger alert-container" role="alert">
+      <strong>Login Failed!</strong> Admin User not allowed.
+    </div>
     <% } else if(alert === 'email') { %>
     <div class="alert alert-danger alert-container" role="alert">
       <strong>Login Failed!</strong> Email not found 😕

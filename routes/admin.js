@@ -12,11 +12,17 @@ router.get("/complaint/get", verify, adminController.complaints);
 router.get("/studentRequests/get", verify, adminController.studentRequest);
 router.get("/home", verify, adminController.adminDashboard);
 
+router.post(
+  "/attendance/update",
+  verify,
+  adminController.updateStudentAttendance
+);
 router.post("/complaint/status", verify, adminController.changeComplaintStatus);
 router.post(
   "/studentRequest/status",
   adminController.changeStudentRequestStatus
 );
+router.post("/delete", verify, adminController.deleteDatabase);
 // router.get("/timetable", adminController.timetable);
 
 router.post("/add-student", adminController.addStudent);

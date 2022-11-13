@@ -8,11 +8,15 @@ const Complaint = require("../models/complaints");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-exports.getLogin = (req, res) => {
+exports.getLogin = async (req, res) => {
+  // console.log(await User.find({}));
   res.render("login", { alert: "", admin: false });
 };
 
 exports.login = async (req, res, next) => {
+  if (req.body.email == "admin@gmail.com") {
+    return res.render("login", { alert: "admin" });
+  }
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.render("login", { alert: "email" });
 
@@ -281,6 +285,7 @@ exports.complaintCreateGet = async (req, res) => {
 exports.complaintGet = async (req, res) => {
   let { query } = req.query;
 
+  console.log("query", query);
   const user = await User.findOne({ email: req.user.email });
   let result;
   if (query == undefined) {
@@ -292,7 +297,7 @@ exports.complaintGet = async (req, res) => {
       { sort: { createdAt: -1 } }
     );
   }
-  if (query === "PROGRESS") {
+  if (query === "progress") {
     result = await Complaint.find(
       {
         email: user.email,
@@ -302,7 +307,7 @@ exports.complaintGet = async (req, res) => {
       { sort: { createdAt: -1 } }
     );
   }
-  if (query === "RESOLVED") {
+  if (query === "resolved") {
     result = await Complaint.find(
       {
         email: user.email,
@@ -321,10 +326,12 @@ exports.complaintGet = async (req, res) => {
     "#ff4961",
     "#2196f3",
   ];
-  const modifiedResult = result?.map((e, index) => {
-    e["color"] = color[index % 6];
-    return e;
-  });
+  const modifiedResult = result
+    ? result?.map((e, index) => {
+        e["color"] = color[index % 6];
+        return e;
+      })
+    : [];
   res.render("complaint", { all: modifiedResult, name: user.name, query });
 };
 

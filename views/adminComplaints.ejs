@@ -156,7 +156,6 @@
     <script src="/dashboard/script.js"></script>
     <script>
       function change(id) {
-        console.log("aslkdjflk", id);
         if (document.getElementById("changeButton").value == "INPROGRESS") {
           fetch("http://localhost:3000/admin/complaint/status", {
             method: "POST",
