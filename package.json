@@ -1,7 +1,7 @@
 {
   "name": "student-dashboard",
   "version": "1.0.0",
-  "description": "Student Dashboard web application",
+  "description": "College Interio web application",
   "main": "index.js",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
